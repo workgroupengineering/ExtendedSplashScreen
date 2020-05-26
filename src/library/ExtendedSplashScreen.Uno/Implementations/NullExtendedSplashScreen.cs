@@ -1,11 +1,10 @@
-﻿#if NETFRAMEWORK
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Nventive.ExtendedSplashScreen
 {
-	public class ExtendedSplashScreenService : IExtendedSplashScreenService
+	public class NullExtendedSplashScreen : IExtendedSplashScreen
 	{
 		public void Dismiss()
 		{
@@ -18,4 +17,3 @@ namespace Nventive.ExtendedSplashScreen
 		}
 	}
 }
-#endif

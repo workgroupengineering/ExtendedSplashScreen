@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
+using Nventive.ExtendedSplashScreen;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -17,18 +17,21 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ExtendedSlashScreen.Uno.Samples
 {
-    public sealed partial class MainPage : Page
-    {
-        public MainPage()
-        {
-            this.InitializeComponent();
-        }
+	public sealed partial class Shell : UserControl
+	{
+		public static Shell Instance { get; private set; }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
+		public Shell(LaunchActivatedEventArgs e)
 		{
-			base.OnNavigatedTo(e);
+			this.InitializeComponent();
 
-			Shell.Instance.ExtendedSplashScreen.Dismiss();
+			Instance = this;
+
+			AppExtendedSplashScreen.SplashScreen = e.SplashScreen;
 		}
+
+		public IExtendedSplashScreen ExtendedSplashScreen => this.AppExtendedSplashScreen;
+
+		public Frame NavigationFrame => this.RootNavigationFrame;
 	}
 }
