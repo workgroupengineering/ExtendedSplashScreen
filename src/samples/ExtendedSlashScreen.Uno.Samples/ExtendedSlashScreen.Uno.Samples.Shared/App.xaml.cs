@@ -50,16 +50,16 @@ namespace ExtendedSlashScreen.Uno.Samples
 				// this.DebugSettings.EnableFrameRateCounter = true;
 			}
 #endif
-            Shell = Window.Current.Content as Shell;
+            Shell = Windows.UI.Xaml.Window.Current.Content as Shell;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (Shell == null)
             {
-				Window.Current.Content = Shell = new Shell(e);
+				Windows.UI.Xaml.Window.Current.Content = Shell = new Shell(e);
 			}
 
-			Window.Current.Activate();
+			Windows.UI.Xaml.Window.Current.Activate();
 
 			if (Shell.NavigationFrame.Content == null)
 			{

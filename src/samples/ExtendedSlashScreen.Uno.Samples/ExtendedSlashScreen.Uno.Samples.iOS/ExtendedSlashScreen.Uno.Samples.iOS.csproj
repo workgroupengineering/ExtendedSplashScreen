@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>3b5748da-9f96-47c9-9216-7b274f764b73</ProjectGuid>
+    <ProjectGuid>{3B5748DA-9F96-47C9-9216-7B274F764B73}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>ExtendedSlashScreen.Uno.Samples</RootNamespace>
@@ -12,6 +12,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <ResourcesDirectory>..\ExtendedSlashScreen.Uno.Samples.Shared\Strings</ResourcesDirectory>
+    <ProvisioningType>automatic</ProvisioningType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,12 +99,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
+    <BundleResource Include="Resources\SplashScreen.png" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Entitlements.plist" />
     <BundleResource Include="Resources\SplashScreen%402x.png" />
-    <BundleResource Include="Resources\SplashScreen%403x.png" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -150,9 +152,10 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Media" Visible="false" />
-    <Folder Include="Media\AppIcons" Visible="false" />
-    <Folder Include="Media\LaunchImages" Visible="false" />
+    <ProjectReference Include="..\..\..\library\ExtendedSplashScreen.Uno\ExtendedSplashScreen.Uno.csproj">
+      <Project>{c1eb34f1-fb57-4e55-a07c-54362cec743f}</Project>
+      <Name>ExtendedSplashScreen.Uno</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\ExtendedSlashScreen.Uno.Samples.Shared\ExtendedSlashScreen.Uno.Samples.Shared.projitems" Label="Shared" Condition="Exists('..\ExtendedSlashScreen.Uno.Samples.Shared\ExtendedSlashScreen.Uno.Samples.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

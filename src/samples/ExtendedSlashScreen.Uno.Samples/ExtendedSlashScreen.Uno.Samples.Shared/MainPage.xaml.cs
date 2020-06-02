@@ -24,10 +24,14 @@ namespace ExtendedSlashScreen.Uno.Samples
             this.InitializeComponent();
         }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
+		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
 			base.OnNavigatedTo(e);
 
+			// Simulate some initialization work
+			await Task.Delay(3000);
+
+			// Dismiss ExtendedSplashScreen when the Main page is ready for being displayed
 			Shell.Instance.ExtendedSplashScreen.Dismiss();
 		}
 	}
