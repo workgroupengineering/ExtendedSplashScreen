@@ -40,10 +40,12 @@ namespace Nventive.ExtendedSplashScreen
 				var visualElementsNode = doc.Descendants(xnamespace + "VisualElements").First();
 				var splashScreenNode = visualElementsNode.Descendants(xnamespace + "SplashScreen").First();
 				var splashScreenImagePath = splashScreenNode.Attribute("Image").Value;
-				var splashScreenBackgroundColor = splashScreenNode.Attribute("BackgroundColor").Value;
+				var splashScreenBackgroundColor = splashScreenNode.Attribute("BackgroundColor")?.Value;
 
 				splashScreenImage.Source = new BitmapImage(new Uri("ms-appx:///" + splashScreenImagePath));
-				splashScreenBackground.Color = (Color)XamlBindingHelper.ConvertValue(typeof(Color), splashScreenBackgroundColor);
+				splashScreenBackground.Color = splashScreenBackgroundColor != null
+					? (Color)XamlBindingHelper.ConvertValue(typeof(Color), splashScreenBackgroundColor)
+					: Colors.White;
 			}
 			catch (Exception e)
 			{

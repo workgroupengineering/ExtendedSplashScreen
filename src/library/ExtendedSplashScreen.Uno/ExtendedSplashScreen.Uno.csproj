@@ -10,9 +10,9 @@
 		<Company>nventive</Company>
 		<RootNamespace>Nventive.ExtendedSplashScreen</RootNamespace>
 		<RootNamespace>Nventive.ExtendedSplashScreen</RootNamespace>
-		<AssemblyName>Nventive.ExtendedSplashScreen</AssemblyName>
+		<AssemblyName>Nventive.ExtendedSplashScreen.Uno</AssemblyName>
 		<Description>Nventive.ExtendedSplashScreen</Description>
-		<PackageId>Nventive.ExtendedSplashScreen</PackageId>
+		<PackageId>Nventive.ExtendedSplashScreen.Uno</PackageId>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
