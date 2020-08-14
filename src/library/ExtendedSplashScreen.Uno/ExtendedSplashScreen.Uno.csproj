@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<!-- Change the TargetFrameworks depending on which platform you are building on. This avoids errors as it is impossible to build UAP on OSX (MacOS) -->
 		<TargetFrameworks Condition="'$([MSBuild]::IsOsPlatform(OSX))'">netstandard2.0;xamarinios10;</TargetFrameworks>
-		<TargetFrameworks Condition="'!$([MSBuild]::IsOsPlatform(OSX))'">netstandard2.0;xamarinios10;monoandroid90;uap10.0.17763;net461</TargetFrameworks>
+		<TargetFrameworks Condition="'!$([MSBuild]::IsOsPlatform(OSX))'">netstandard2.0;xamarinios10;monoandroid10.0;uap10.0.17763;net461</TargetFrameworks>
 		<!-- Ensures the .xr.xml files are generated in a proper layout folder -->
 		<GenerateLibraryLayout>true</GenerateLibraryLayout>
 		<Authors>nventive</Authors>
@@ -21,6 +21,6 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Uno.UI" Version="1.45.0" />
+		<PackageReference Include="Uno.UI" Version="2.4.0" />
 	</ItemGroup>
 </Project>
