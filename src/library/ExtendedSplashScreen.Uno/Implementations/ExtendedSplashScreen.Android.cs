@@ -9,6 +9,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Nventive.ExtendedSplashScreen
 {
@@ -44,7 +45,7 @@ namespace Nventive.ExtendedSplashScreen
 						{
 							Width = splashScreenSize.Width,
 							Height = splashScreenSize.Height,
-							Child = splashView,
+							Child = VisualTreeHelper.AdaptNative(splashView),
 						}
 					},
 				};

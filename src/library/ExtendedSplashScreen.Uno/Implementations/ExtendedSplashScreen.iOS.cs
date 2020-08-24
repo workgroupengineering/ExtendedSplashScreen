@@ -34,7 +34,7 @@ namespace Nventive.ExtendedSplashScreen
 				// We use a Border to ensure proper layout
 				var element = new Border
 				{
-					Child = launchScreenView,
+					Child = VisualTreeHelper.AdaptNative(launchScreenView),
 
 					// We set a background to prevent touches from going through
 					Background = SolidColorBrushHelper.Transparent
