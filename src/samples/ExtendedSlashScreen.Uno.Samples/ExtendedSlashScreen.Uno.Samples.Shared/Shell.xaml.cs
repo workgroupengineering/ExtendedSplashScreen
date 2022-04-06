@@ -27,7 +27,9 @@ namespace ExtendedSlashScreen.Uno.Samples
 
 			Instance = this;
 
-			AppExtendedSplashScreen.SplashScreen = e.SplashScreen;
+#if WINDOWS_UWP
+			AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
+#endif
 		}
 
 		public IExtendedSplashScreen ExtendedSplashScreen => this.AppExtendedSplashScreen;

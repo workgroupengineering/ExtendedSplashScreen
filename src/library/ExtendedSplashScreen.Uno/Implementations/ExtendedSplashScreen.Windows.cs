@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
 using Uno.Extensions;
-using Uno.Logging;
 using Windows.ApplicationModel.Activation;
 using Windows.Graphics.Display;
 using Windows.UI;

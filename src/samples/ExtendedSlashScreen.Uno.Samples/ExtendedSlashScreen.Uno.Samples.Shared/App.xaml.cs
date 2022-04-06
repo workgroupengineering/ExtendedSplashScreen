@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -37,6 +38,10 @@ namespace ExtendedSlashScreen.Uno.Samples
 
 		public Shell Shell { get; private set; }
 
+		public Window CurrentWindow => Windows.UI.Xaml.Window.Current;
+
+		public Activity ShellActivity { get; } = new Activity(nameof(Shell));
+
 		/// <summary>
 		/// Invoked when the application is launched normally by the end user.  Other entry points
 		/// will be used such as when the application is launched to open a specific file.
@@ -49,17 +54,21 @@ namespace ExtendedSlashScreen.Uno.Samples
 			{
 				// this.DebugSettings.EnableFrameRateCounter = true;
 			}
-#endif
-            Shell = Windows.UI.Xaml.Window.Current.Content as Shell;
+# endif
+			Shell = CurrentWindow.Content as Shell;
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (Shell == null)
-            {
-				Windows.UI.Xaml.Window.Current.Content = Shell = new Shell(e);
+			var isFirstLaunch = Shell == null;
+
+			if (isFirstLaunch)
+			{
+				ShellActivity.Start();
+
+				CurrentWindow.Content = Shell = new Shell(e);
+
+				ShellActivity.Stop();
 			}
 
-			Windows.UI.Xaml.Window.Current.Activate();
+			CurrentWindow.Activate();
 
 			if (Shell.NavigationFrame.Content == null)
 			{
@@ -98,11 +107,11 @@ namespace ExtendedSlashScreen.Uno.Samples
         /// <param name="factory"></param>
         static void ConfigureFilters(ILoggerFactory factory)
         {
-            factory
-                .WithFilter(new FilterLoggerSettings
-                    {
-                        { "Uno", LogLevel.Warning },
-                        { "Windows", LogLevel.Warning },
+			factory
+				.WithFilter(new FilterLoggerSettings
+					{
+						{ "Uno", LogLevel.Warning },
+						{ "Windows", LogLevel.Warning },
 
 						// Debug JS interop
 						// { "Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug },
@@ -137,12 +146,7 @@ namespace ExtendedSlashScreen.Uno.Samples
 						// { "Windows.UI.Xaml.Controls.BufferViewCache", LogLevel.Debug }, //Android
 						// { "Windows.UI.Xaml.Controls.VirtualizingPanelGenerator", LogLevel.Debug }, //WASM
 					}
-                )
-#if DEBUG
-				.AddConsole(LogLevel.Debug);
-#else
-                .AddConsole(LogLevel.Information);
-#endif
+				);
         }
     }
 }
