@@ -69,7 +69,6 @@ namespace ExtendedSlashScreen.Uno.Samples
 			}
 
 			CurrentWindow.Activate();
-			Shell = Windows.UI.Xaml.Window.Current.Content as Shell;
 
 			if (Shell.NavigationFrame.Content == null)
 			{
