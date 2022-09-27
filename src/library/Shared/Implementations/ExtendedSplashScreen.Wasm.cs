@@ -3,7 +3,11 @@ using System;
 using System.Linq;
 using System.Text;
 using Windows.ApplicationModel.Activation;
+#if WINUI
+using Microsoft.UI.Xaml;
+#else
 using Windows.UI.Xaml;
+#endif
 
 namespace Nventive.ExtendedSplashScreen
 {
