@@ -13,34 +13,47 @@
     <PackageTags>extendedsplashscreen;splashscreen;async;mvvm;maui;winui;ios;android</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nventive/ExtendedSplashScreen</PackageProjectUrl>
+    <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
+
+    <!--Needed for Source Link support -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
   </PropertyGroup>
+
 	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
 		<DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
 	</PropertyGroup>
+
   <ItemGroup>
-	<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-	<PackageReference Include="Uno.Core" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Uno.Core" Version="4.0.1" />
     <PackageReference Include="Uno.WinUI" Version="4.4.13" />
-	<PackageReference Include="Uno.SourceGenerationTasks" Version="4.1.0" />
+    <PackageReference Include="Uno.SourceGenerationTasks" Version="4.1.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!--Microsoft.SourceLink.GitHub is needed for Source Link support -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-windows10.0.18362'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22000.24" />
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22000.24" />
   </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)'!='net6.0-windows10.0.18362'">
     <Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
   </ItemGroup>
+
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

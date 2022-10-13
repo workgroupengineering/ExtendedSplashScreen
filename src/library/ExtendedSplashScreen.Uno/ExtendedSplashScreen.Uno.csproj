@@ -13,6 +13,15 @@
 		<Description>Nventive.ExtendedSplashScreen</Description>
 		<PackageId>Nventive.ExtendedSplashScreen.Uno</PackageId>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageTags>extendedsplashscreen;splashscreen;async;mvvm;xamarin;uwp;ios;android</PackageTags>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/nventive/ExtendedSplashScreen</PackageProjectUrl>
+
+		<!--Needed for Source Link support -->
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
@@ -24,6 +33,11 @@
 		<PackageReference Include="Uno.Core" Version="4.0.1" />
 		<PackageReference Include="Uno.UI" Version="4.0.13" />
 		<PackageReference Include="Uno.SourceGenerationTasks" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--Microsoft.SourceLink.GitHub is needed for Source Link support -->
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 	
 	<Import Project="..\Shared\Shared.projitems" Label="Shared" />
