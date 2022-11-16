@@ -18,11 +18,6 @@
 											<DiscreteObjectKeyFrame KeyTime="0:0:0.150"
 																	Value="Collapsed" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="ProgressRing"
-																	   Storyboard.TargetProperty="IsActive">
-											<DiscreteObjectKeyFrame KeyTime="0:0:0.150"
-																	Value="False" />
-										</ObjectAnimationUsingKeyFrames>
 										<!-- TODO: On Windows, this animates the opacity of each visual layer independently. -->
 										<DoubleAnimation Storyboard.TargetName="RootGrid"
 														 Storyboard.TargetProperty="Opacity"
@@ -33,14 +28,10 @@
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
 						<ContentPresenter x:Name="SplashScreenPresenter" />
-						<ProgressRing x:Name="ProgressRing"
-									  IsActive="True"
-									  Height="20"
-									  Width="20"
-									  Margin="0,300,0,0"
-									  VerticalAlignment="Center"
-									  HorizontalAlignment="Center"
-									  Foreground="Black" />
+
+						<Rectangle Fill="Red"
+								   Height="100"
+								   Width="100" />
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>

@@ -1,46 +1,42 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+#if WINUI
+using Microsoft.UI.Xaml;
+using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+#else
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+#endif
 
 namespace ExtendedSlashScreen.Uno.Samples
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
-    sealed partial class App : Application
-    {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
+	/// <summary>
+	/// Provides application-specific behavior to supplement the default Application class.
+	/// </summary>
+	public sealed partial class App : Application
+	{
+		/// <summary>
+		/// Initializes the singleton application object.  This is the first line of authored code
+		/// executed, and as such is the logical equivalent of main() or WinMain().
+		/// </summary>
+		public App()
+		{
+			ConfigureFilters(global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory);
 
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
-        }
-
-		public Shell Shell { get; private set; }
-
-		public Window CurrentWindow => Windows.UI.Xaml.Window.Current;
-
-		public Activity ShellActivity { get; } = new Activity(nameof(Shell));
+			this.InitializeComponent();
+#if !WINUI
+			this.Suspending += OnSuspending;
+#endif
+		}
 
 		/// <summary>
 		/// Invoked when the application is launched normally by the end user.  Other entry points
@@ -48,65 +44,68 @@ namespace ExtendedSlashScreen.Uno.Samples
 		/// </summary>
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(LaunchActivatedEventArgs e)
-        {
+		{
 #if DEBUG
 			if (System.Diagnostics.Debugger.IsAttached)
 			{
 				// this.DebugSettings.EnableFrameRateCounter = true;
 			}
-# endif
-			Shell = CurrentWindow.Content as Shell;
+#endif
 
-			var isFirstLaunch = Shell == null;
+#if WINDOWS
+			var window = new Window();
+			window.Activate();
+#elif __IOS__ && WINUI
+			var window = Microsoft.UI.Xaml.Window.Current;
+#elif __IOS__
+			var window = Windows.UI.Xaml.Window.Current;
+#else
+			var window = Window.Current;
+#endif
 
-			if (isFirstLaunch)
+			Shell rootFrame = window.Content as Shell;
+
+			// Do not repeat app initialization when the Window already has content,
+			// just ensure that the window is active
+			if (rootFrame == null)
 			{
-				ShellActivity.Start();
+				// Create a Frame to act as the navigation context and navigate to the first page
+				rootFrame = new Shell(e);
 
-				CurrentWindow.Content = Shell = new Shell(e);
-
-				ShellActivity.Stop();
+				// Place the frame in the current Window
+				window.Content = rootFrame;
 			}
 
-			CurrentWindow.Activate();
-
-			if (Shell.NavigationFrame.Content == null)
+#if !(NET5_0_OR_GREATER && WINDOWS || WINUI)
+			if (e.PrelaunchActivated == false)
+#endif
 			{
-				Shell.NavigationFrame.Navigate(typeof(MainPage), e.Arguments);
+				// Ensure the current window is active
+				window.Activate();
 			}
 		}
 
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
-        }
-
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
-        }
+		/// <summary>
+		/// Invoked when application execution is being suspended.  Application state is saved
+		/// without knowing whether the application will be terminated or resumed with the contents
+		/// of memory still intact.
+		/// </summary>
+		/// <param name="sender">The source of the suspend request.</param>
+		/// <param name="e">Details about the suspend request.</param>
+		private void OnSuspending(object sender, SuspendingEventArgs e)
+		{
+			var deferral = e.SuspendingOperation.GetDeferral();
+			//TODO: Save application state and stop any background activity
+			deferral.Complete();
+		}
 
 
-        /// <summary>
-        /// Configures global logging
-        /// </summary>
-        /// <param name="factory"></param>
-        static void ConfigureFilters(ILoggerFactory factory)
-        {
+		/// <summary>
+		/// Configures global logging
+		/// </summary>
+		/// <param name="factory"></param>
+		static void ConfigureFilters(ILoggerFactory factory)
+		{
 			factory
 				.WithFilter(new FilterLoggerSettings
 					{
@@ -146,7 +145,12 @@ namespace ExtendedSlashScreen.Uno.Samples
 						// { "Windows.UI.Xaml.Controls.BufferViewCache", LogLevel.Debug }, //Android
 						// { "Windows.UI.Xaml.Controls.VirtualizingPanelGenerator", LogLevel.Debug }, //WASM
 					}
-				);
-        }
-    }
+				)
+#if DEBUG
+				.AddConsole(LogLevel.Debug);
+#else
+				.AddConsole(LogLevel.Information);
+#endif
+		}
+	}
 }

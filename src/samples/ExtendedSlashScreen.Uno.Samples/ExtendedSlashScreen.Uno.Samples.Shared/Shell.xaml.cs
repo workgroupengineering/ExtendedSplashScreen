@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Nventive.ExtendedSplashScreen;
+﻿using Nventive.ExtendedSplashScreen;
+#if WINUI
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+#else
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+#endif
 
 namespace ExtendedSlashScreen.Uno.Samples
 {
@@ -27,9 +22,11 @@ namespace ExtendedSlashScreen.Uno.Samples
 
 			Instance = this;
 
-#if WINDOWS_UWP || WINDOWS
+#if WINDOWS_UWP
 			AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
 #endif
+
+			NavigationFrame.Navigate(typeof(MainPage), e.Arguments);
 		}
 
 		public IExtendedSplashScreen ExtendedSplashScreen => this.AppExtendedSplashScreen;

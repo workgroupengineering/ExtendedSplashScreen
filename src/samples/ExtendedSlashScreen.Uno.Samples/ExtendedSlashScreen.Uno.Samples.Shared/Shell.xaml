@@ -11,7 +11,7 @@
 		<Frame x:Name="RootNavigationFrame" />
 
 		<splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen" />
-		
+
 	</Grid>
 
 </UserControl>
