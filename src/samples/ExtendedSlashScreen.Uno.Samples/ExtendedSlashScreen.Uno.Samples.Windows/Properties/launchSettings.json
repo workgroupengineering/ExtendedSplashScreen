@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"ExtendedSlashScreen.Uno.Samples.Windows (Package)": {
+			"commandName": "MsixPackage"
+		},
+		"ExtendedSlashScreen.Uno.Samples.Windows (Unpackaged)": {
+			"commandName": "Project"
+		}
+	}
+}
