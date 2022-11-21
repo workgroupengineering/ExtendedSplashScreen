@@ -22,6 +22,11 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-android'">
+		<!-- Workaround: https://github.com/unoplatform/uno/issues/9723 -->
+		<_AndroidApiLevel>31</_AndroidApiLevel>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
 		<DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
 	</PropertyGroup>
