@@ -4,13 +4,24 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:splash="using:Nventive.ExtendedSplashScreen"
+			 xmlns:win="using:Nventive.ExtendedSplashScreen"
 			 mc:Ignorable="d">
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+		<Grid.Resources>
+			<DataTemplate x:Key="WindowsExtendedSplashScreenDataTemplate">
+				<Grid Background="AliceBlue"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Stretch">
+				</Grid>
+			</DataTemplate>
+		</Grid.Resources>
+		
 		<Frame x:Name="RootNavigationFrame" />
 
-		<splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen" />
+		<splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen"
+									 win:WindowsDataTemplate="{StaticResource WindowsExtendedSplashScreenDataTemplate}" />
 
 	</Grid>
 
