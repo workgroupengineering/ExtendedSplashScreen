@@ -29,6 +29,19 @@ namespace Nventive.ExtendedSplashScreen
 
 		public SplashScreen SplashScreen { get; set; }
 
+		/// <summary>
+		/// Alternative to <see cref="SplashScreen"/>.
+		/// Splash Screen is not supported yet on WinUI. See https://github.com/microsoft/microsoft-ui-xaml/issues/4055 for more details.
+		/// </summary>
+		public DataTemplate WindowsDataTemplate
+		{
+			get { return (DataTemplate)GetValue(WindowsDataTemplateProperty); }
+			set { SetValue(WindowsDataTemplateProperty, value); }
+		}
+
+		public static readonly DependencyProperty WindowsDataTemplateProperty =
+			DependencyProperty.Register("WindowsDataTemplate", typeof(DataTemplate), typeof(ExtendedSplashScreen), new PropertyMetadata(default));
+
 		protected override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
