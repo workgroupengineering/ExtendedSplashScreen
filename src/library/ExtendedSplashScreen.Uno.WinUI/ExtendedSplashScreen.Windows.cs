@@ -9,8 +9,10 @@ namespace Nventive.ExtendedSplashScreen
 	{
 		public FrameworkElement GetNativeSplashScreen(SplashScreen splashScreen)
 		{
-			// Splashscreen is not supported yet on winui https://github.com/microsoft/microsoft-ui-xaml/issues/4055
-			return default(FrameworkElement);
+			return new ContentPresenter
+			{
+				ContentTemplate = WindowsDataTemplate
+			};
 		}
 	}
 }

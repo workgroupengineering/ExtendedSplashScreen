@@ -8,9 +8,19 @@
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+		<Grid.Resources>
+			<DataTemplate x:Key="WindowsExtendedSplashScreenDataTemplate">
+				<Grid Background="AliceBlue"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Stretch">
+				</Grid>
+			</DataTemplate>
+		</Grid.Resources>
+		
 		<Frame x:Name="RootNavigationFrame" />
 
-		<splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen" />
+		<splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen"
+									 WindowsDataTemplate="{StaticResource WindowsExtendedSplashScreenDataTemplate}" />
 
 	</Grid>
 
