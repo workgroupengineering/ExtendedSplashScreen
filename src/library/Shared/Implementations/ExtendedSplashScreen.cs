@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Uno.Extensions;
 using Windows.ApplicationModel.Activation;
 #if WINUI
 using Microsoft.UI.Xaml;
@@ -26,8 +28,14 @@ namespace Nventive.ExtendedSplashScreen
 		private const string DismissedStateName = "Dismissed";
 
 		private bool _isDismissed;
+		private ContentPresenter _splashScreenPresenter;
 
 		public SplashScreen SplashScreen { get; set; }
+
+		/// <summary>
+		/// Gets or sets the logger for this class.
+		/// </summary>
+		public static ILogger Logger { get; set; } = typeof(ExtendedSplashScreen).Log();
 
 		/// <summary>
 		/// Alternative to <see cref="SplashScreen"/>.
@@ -48,7 +56,8 @@ namespace Nventive.ExtendedSplashScreen
 
 			if (GetTemplateChild(SplashScreenPresenterPartName) is ContentPresenter splashScreenPresenter)
 			{
-				splashScreenPresenter.Content = GetNativeSplashScreen(SplashScreen);
+				_splashScreenPresenter = splashScreenPresenter;
+				_splashScreenPresenter.Content = GetNativeSplashScreen(SplashScreen);
 			}
 
 			UpdateSplashScreenState(useTransitions: false);

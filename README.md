@@ -103,6 +103,29 @@ Then, all you need to do is to set the style.
 </Style>
 ```
 
+## Android 12+
+The native splash screen behavior changes starting at Android 12.
+See [reference](https://developer.android.com/develop/ui/views/launch/splash-screen).
+
+`ExtendedSplashScreen` supports the Android 12+ behavior.
+You need to add the following code in your MainActivity.cs to override the default behavior.
+```csharp
+public sealed class MainActivity : Microsoft.UI.Xaml.ApplicationActivity
+{
+	protected override void OnCreate(Bundle bundle)
+	{
+		// Handle the splash screen transition.
+		Nventive.ExtendedSplashScreen.ExtendedSplashScreen.AndroidSplashScreen = AndroidX.Core.SplashScreen.SplashScreen.InstallSplashScreen(this);
+
+		// It's important to call base.OnCreate AFTER setting ExtendedSplashScreen.AndroidSplashScreen.
+		base.OnCreate(bundle);
+	}
+}
+```
+
+Note that when you run your app in debug from Visual Studio (or other IDEs), the new SplashScreen icon doesn't show.
+It shows when you run the app from the launcher (even debug builds).
+
 ## Features
 
 {More details/listing of features of the project}

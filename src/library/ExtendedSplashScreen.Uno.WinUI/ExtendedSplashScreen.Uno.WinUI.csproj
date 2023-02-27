@@ -38,6 +38,10 @@
     <PackageReference Include="Uno.SourceGenerationTasks" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0-android'">
+    <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.0.3" />
+  </ItemGroup>
+
   <ItemGroup>
     <!--Microsoft.SourceLink.GitHub is needed for Source Link support -->
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
