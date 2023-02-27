@@ -46,7 +46,7 @@ namespace Nventive.ExtendedSplashScreen
 			}
 			catch (Exception e)
 			{
-				typeof(ExtendedSplashScreen).Log().LogError(0, e, "Error while getting native splash screen.");
+				Logger.LogError(0, e, "Error while getting native splash screen.");
 			}
 
 			void PositionImage()
