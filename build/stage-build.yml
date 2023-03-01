@@ -61,7 +61,9 @@
     restoreNugetPackages: false
     logProjectEvents: false
     createLogFile: false
-    msbuildArguments: /p:PackageVersion=$(GitVersion.SemVer) # Set the version of the packages, will have no effect on application projects (Heads).
+    msbuildArguments: > # Set the version of the packages, will have no effect on application projects (Heads).
+      /p:PackageVersion=$(GitVersion.SemVer) 
+      /bl:$(build.artifactstagingdirectory)/build.binlog
 
 - task: VSTest@2
   displayName: 'Run tests'
