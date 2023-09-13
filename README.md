@@ -1,7 +1,9 @@
 ﻿# Extended SplashScreen
 Extended splashscreen allows to control when to dismiss the splascreen. It also gives the developer the ability to add additional xaml content to display while the application is being loaded.
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
+ ![Version](https://img.shields.io/nuget/v/Nventive.ExtendedSplashScreen.Uno?style=flat-square)
+ ![Downloads](https://img.shields.io/nuget/dt/Nventive.ExtendedSplashScreen.Uno?style=flat-square)
 
 ## Getting Started
 Install the latest version of `Nventive.ExtendedSplashScreen.Uno` or `Nventive.ExtendedSplashScreen.Uno.WinUI`.
@@ -126,9 +128,6 @@ public sealed class MainActivity : Microsoft.UI.Xaml.ApplicationActivity
 Note that when you run your app in debug from Visual Studio (or other IDEs), the new SplashScreen icon doesn't show.
 It shows when you run the app from the launcher (even debug builds).
 
-## Features
-
-{More details/listing of features of the project}
 
 ## Changelog
 
