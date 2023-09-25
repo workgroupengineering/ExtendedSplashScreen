@@ -1,109 +1,125 @@
 ﻿# Extended SplashScreen
-Extended splashscreen allows to control when to dismiss the splascreen. It also gives the developer the ability to add additional xaml content to display while the application is being loaded.
+Extended splashscreen allows to control when to dismiss the splashscreen. It also gives the developer the ability to add additional xaml content to display while the application is being loaded.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
  ![Version](https://img.shields.io/nuget/v/Nventive.ExtendedSplashScreen.Uno?style=flat-square)
  ![Downloads](https://img.shields.io/nuget/dt/Nventive.ExtendedSplashScreen.Uno?style=flat-square)
 
 ## Getting Started
-Install the latest version of `Nventive.ExtendedSplashScreen.Uno` or `Nventive.ExtendedSplashScreen.Uno.WinUI`.
+1. Install the latest version of `Nventive.ExtendedSplashScreen.Uno` or `Nventive.ExtendedSplashScreen.Uno.WinUI`.
 
-In order for this package to work, you also need to setup the rootframe in app.xaml.cs to be a custom UserControl instead of a frame.
-``` c#			
-Shell rootFrame = window.Content as Shell;
+1. Setup the root content of the window to be a custom `UserControl` instead of a `Frame`.
+   (We called this `UserControl` **"Shell"** in the following steps.)
+    ``` c#			
+    Shell shell = window.Content as Shell;
 
-// just ensure that the window is active
-if (rootFrame == null)
-{
-  // Use a UserControl that will contain the frame for naviation as a rootframe.
-  rootFrame = new Shell(e);
+    if (shell == null)
+    {
+      shell = new Shell(e);
 
-  window.Content = rootFrame;
-}
- ```
+      window.Content = rootFrame;
+    }
+    ```
 
-In the User control, you need to put a frame that will be used for navigation and which will show the content of the app, as well as the Extended splashscreen.
-It is important to put the Splascreen lower than the frame so that the splash screen content goes over the content of the frame.
-```XML
-<UserControl x:Class="ExtendedSlashScreen.Uno.Samples.Shell"
-             ...
-             xmlns:splash="using:Nventive.ExtendedSplashScreen">
+1. In the `UserControl`, put the following:
+   - Put a `Frame` (or anything else that you need) to display the app content.
+   - Put the `ExtendedSplashScreen` control.
+   
+   It is important to put the `ExtendedSplashScreen` control _below_ than the `Frame` so that the splash screen hides the app content.
+    ```XML
+    <UserControl x:Class="ExtendedSlashScreen.Uno.Samples.Shell"
+                ...
+                xmlns:splash="using:Nventive.ExtendedSplashScreen">
 
-  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Frame x:Name="RootNavigationFrame" />
+        <Frame x:Name="RootNavigationFrame" />
 
-    <splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen" />
-  </Grid>
-</UserControl>
-```
+        <splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen" />
+      </Grid>
+    </UserControl>
+    ```
 
-In the code behind of the user control you can set the splashscreen for UWP, and make a reference to the shell in Instance and make a public property to represent the ExtendedSplashscreen.            
-```C#
-public sealed partial class Shell : UserControl
-{
-  public static Shell Instance { get; private set; }
+1. Expose the `IExtendedSplashScreen` publicly from the code behind of you `UserControl`.
 
-  public Shell(LaunchActivatedEventArgs e)
-  {
-    this.InitializeComponent();
+   In this sample we do it by exposing a `ExtendedSplashScreen` property and containing the `IExtendedSplashScreen` and a static `Instance` property containing the latest instance of the `Shell`.
+    ```C#
+    public sealed partial class Shell : UserControl
+    {
+      public static Shell Instance { get; private set; }
 
-    Instance = this;
+      public Shell(LaunchActivatedEventArgs e)
+      {
+        this.InitializeComponent();
 
-#if WINDOWS_UWP
-     AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
-#endif
+        Instance = this;
 
-    NavigationFrame.Navigate(typeof(MainPage), e.Arguments);
-  }
+    #if WINDOWS_UWP // Do this only if you target UWP.
+        AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
+    #endif
 
-  public IExtendedSplashScreen ExtendedSplashScreen => this.AppExtendedSplashScreen;
+        NavigationFrame.Navigate(typeof(MainPage), e.Arguments);
+      }
 
-  public Frame NavigationFrame => this.RootNavigationFrame;
-}
-```
+      public IExtendedSplashScreen ExtendedSplashScreen => this.AppExtendedSplashScreen;
 
-You can reference the instance property later for navigation and you can dismiss the ExtendedSplashScreen with this line of code: 
+      public Frame NavigationFrame => this.RootNavigationFrame;
+    }
+    ```
 
-```c#
-Shell.Instance.ExtendedSplashScreen.Dismiss();
-```
+1. Add code to dismiss the `ExtendedSplashScreen` for when your app is ready to be displayed.
 
-Then, all you need to do is to set the style.
-```xml
-<Style x:Key="DefaultExtendedSplashScreenStyle"
-       TargetType="splash:ExtendedSplashScreen">
-  <Setter Property="Template">
-    <Setter.Value>
-      <ControlTemplate TargetType="splash:ExtendedSplashScreen">
-        <Grid x:Name="RootGrid">
-          <VisualStateManager.VisualStateGroups>
-             <VisualStateGroup x:Name="SplashScreenStates">
-              <VisualState x:Name="Normal" />
-              <VisualState x:Name="Dismissed">
-                <Storyboard>
-                  <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
-                                                 Storyboard.TargetProperty="Visibility">
-					<DiscreteObjectKeyFrame KeyTime="0:0:0.150"
-                                            Value="Collapsed" />
-                  </ObjectAnimationUsingKeyFrames>
-                  <DoubleAnimation Storyboard.TargetName="RootGrid"
-                                   Storyboard.TargetProperty="Opacity"
-                                   To="0"
-                                   Duration="0:0:0.150" />
-                </Storyboard>
-              </VisualState>
-            </VisualStateGroup>
-          </VisualStateManager.VisualStateGroups>
+    ```c#
+    Shell.Instance.ExtendedSplashScreen.Dismiss();
+    ```
 
-          <!-- Here you can put the content you want in your ExtendedSplashscreen. The Content presenter here is the splashscreen that you have. You can put anything you want below it to make it appear over the splashscreen. -->
-          <ContentPresenter x:Name="SplashScreenPresenter" />
-        </Grid>
-      </ControlTemplate>
-    </Setter.Value>
-  </Setter>
-</Style>
-```
+1. Create a style for the `ExtendedSplashScreen` control.
+    ```xml
+    <Style x:Key="DefaultExtendedSplashScreenStyle"
+          TargetType="splash:ExtendedSplashScreen">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="splash:ExtendedSplashScreen">
+            <Grid x:Name="RootGrid">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="SplashScreenStates">
+                  <!-- The Normal visual state represents the state when the extended splash screen is shown. -->
+                  <VisualState x:Name="Normal" />
+
+                  <!-- The Dismissed visual state represents the state when the extended splash screen is dismissed. -->
+                  <VisualState x:Name="Dismissed">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
+                                                     Storyboard.TargetProperty="Visibility">
+              <DiscreteObjectKeyFrame KeyTime="0:0:0.150"
+                                      Value="Collapsed" />
+                      </ObjectAnimationUsingKeyFrames>
+                      <DoubleAnimation Storyboard.TargetName="RootGrid"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0"
+                                       Duration="0:0:0.150" />
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+
+              <!-- This ContentPresenter shows a copy of the native splashscreen. -->
+              <ContentPresenter x:Name="SplashScreenPresenter" />
+
+              <!-- You can add custom content in this template, such as a loading animation. -->
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    ```
+
+1. Apply the style to the `ExtendedSplashScreen` control in your `UserControl`.
+    ```xml
+    <splash:ExtendedSplashScreen x:Name="AppExtendedSplashScreen"
+                                 Style="{StaticResource DefaultExtendedSplashScreenStyle}" />
+    ```
+   > 💡 You can skip this part if you setup an implicit style.
 
 ## Android 12+
 The native splash screen behavior changes starting at Android 12.
@@ -127,7 +143,6 @@ public sealed class MainActivity : Microsoft.UI.Xaml.ApplicationActivity
 
 Note that when you run your app in debug from Visual Studio (or other IDEs), the new SplashScreen icon doesn't show.
 It shows when you run the app from the launcher (even debug builds).
-
 
 ## Changelog
 
