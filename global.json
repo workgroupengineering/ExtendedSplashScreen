@@ -1,7 +1,0 @@
-﻿{
-	// We want to use .Net 6 and not 7 because that causes problems with apps built using .Net 6.
-	"sdk": {
-		"version": "6.0.300",
-		"rollForward": "latestFeature"
-	}
-}
