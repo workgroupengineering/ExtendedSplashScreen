@@ -155,8 +155,8 @@ namespace Nventive.ExtendedSplashScreen
 				// We use a Canvas to ensure it's clipped but not resized (important when device has soft-keys)
 				var element = new UnoCanvas
 				{
-					// We set a background to prevent touches from going through
-					Background = SolidColorBrushHelper.Transparent,
+					// We set a transparent background to prevent touches from going through
+					Background = new SolidColorBrush(Android.Graphics.Color.Transparent),
 					// We use a Border to ensure proper layout
 					Children =
 					{

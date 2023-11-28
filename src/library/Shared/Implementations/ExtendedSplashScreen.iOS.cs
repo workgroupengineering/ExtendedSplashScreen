@@ -10,6 +10,8 @@ using Uno.Logging;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Graphics.Display;
+using UIKit;
+
 #if WINUI
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
@@ -44,8 +46,8 @@ namespace Nventive.ExtendedSplashScreen
 				{
 					Child = VisualTreeHelper.AdaptNative(launchScreenView),
 
-					// We set a background to prevent touches from going through
-					Background = SolidColorBrushHelper.Transparent
+					// We set a transparent background to prevent touches from going through
+					Background = new SolidColorBrush(UIColor.Clear)
 				};
 
 				return element;

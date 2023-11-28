@@ -54,7 +54,7 @@ Extended splashscreen allows to control when to dismiss the splashscreen. It als
 
         Instance = this;
 
-    #if WINDOWS_UWP // Do this only if you target UWP.
+    #if WINDOWS_UWP // Legacy - Do this only if you target UWP.
         AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
     #endif
 
