@@ -144,6 +144,13 @@ public sealed class MainActivity : Microsoft.UI.Xaml.ApplicationActivity
 Note that when you run your app in debug from Visual Studio (or other IDEs), the new SplashScreen icon doesn't show.
 It shows when you run the app from the launcher (even debug builds).
 
+## Trace Logs
+You can enable trace logs on the `Nventive.ExtendedSplashScreen` namespace to get more information about the runtime behavior.
+
+You can override the logger via `ExtendedSplashScreen.Logger`.
+By default, one is created using the `AmbientLoggerFactory` from the `Uno.Core.Extensions.Logging.Singleton` package.
+
+
 ## Changelog
 
 Please consult the [CHANGELOG](CHANGELOG.md) for more information about version
