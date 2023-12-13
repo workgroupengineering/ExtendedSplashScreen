@@ -23,12 +23,13 @@ using UnoCanvas = Windows.UI.Xaml.Controls.Canvas;
 
 namespace Nventive.ExtendedSplashScreen
 {
-	[Preserve(AllMembers=true)]
+	[Preserve(AllMembers = true)]
 	public partial class ExtendedSplashScreen
 	{
 		private static ExtendedSplashScreen _instance;
 		private static Bitmap _splashBitmap;
 		private static AndroidX.Core.SplashScreen.SplashScreen _androidSplashScreen;
+		private static bool? _isNativeViewValid;
 
 		/// <summary>
 		/// Gets or sets the Android SplashScreen.<br/>
@@ -60,11 +61,22 @@ namespace Nventive.ExtendedSplashScreen
 		{
 			Trace("Started OnExitAnimation.");
 
-			_splashBitmap = GetBitmapFromView(e.SplashScreenViewProvider.View);
+			var view = e.SplashScreenViewProvider.View;
+
+			// It seems like the view can sometimes be invalid according to https://github.com/nventive/ExtendedSplashScreen/issues/76.
+			_isNativeViewValid = view.Width > 0 && view.Height > 0;
+
+			if (_isNativeViewValid.Value)
+			{
+				_splashBitmap = GetBitmapFromView(view);
+			}
+			else
+			{
+				Trace("Native view is invalid because at least one of its dimension is 0.");
+			}
 
 			if (_instance._splashScreenPresenter != null)
 			{
-				
 				Trace("Setting ExtendedSplashScreen content.");
 				_instance._splashScreenPresenter.Content = _instance.GetNativeSplashScreen(null);
 				Trace("Set ExtendedSplashScreen content. Removing native SplashScreen.");
@@ -72,7 +84,6 @@ namespace Nventive.ExtendedSplashScreen
 				// Remove the native splash now that we've set the extended one.
 				e.SplashScreenViewProvider.Remove();
 				Trace("Removed native SplashScreen.");
-				
 			}
 			Trace("Finished OnExitAnimation.");
 		}
@@ -121,10 +132,10 @@ namespace Nventive.ExtendedSplashScreen
 		{
 			try
 			{
-				if (AndroidSplashScreen != null && _splashBitmap == null)
+				if (AndroidSplashScreen != null && _splashBitmap == null && !_isNativeViewValid.HasValue)
 				{
 					Trace("AndroidSplashScreen is not null. Waiting for native splashscreen animation exit to get the native view.");
-					
+
 					_instance = this;
 					return null;
 				}
@@ -134,14 +145,19 @@ namespace Nventive.ExtendedSplashScreen
 				// Get the splash screen size
 				var splashScreenSize = GetSplashScreenSize(activity);
 
-				var imageView = new ImageView(activity);
-				imageView.SetImageBitmap(_splashBitmap);
-				View splashView = imageView;
+				View splashView = null;
+
+				if (_isNativeViewValid.Value)
+				{
+					var imageView = new ImageView(activity);
+					imageView.SetImageBitmap(_splashBitmap);
+					splashView = imageView;
+				}
 
 				if (splashView == null)
 				{
 					Trace("Android 12 splash screen bitmap unavailable. Falling back to default behavior.");
-					
+
 					// Get the theme's windowBackground (which we use as splash screen)
 					var attribute = new Android.Util.TypedValue();
 					activity?.Theme.ResolveAttribute(Android.Resource.Attribute.WindowBackground, attribute, true);
