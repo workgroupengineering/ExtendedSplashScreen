@@ -22,10 +22,6 @@ namespace ExtendedSlashScreen.Uno.Samples
 
 			Instance = this;
 
-#if WINDOWS_UWP
-			AppExtendedSplashScreen.SplashScreen = e?.SplashScreen;
-#endif
-
 			NavigationFrame.Navigate(typeof(MainPage), e.Arguments);
 		}
 

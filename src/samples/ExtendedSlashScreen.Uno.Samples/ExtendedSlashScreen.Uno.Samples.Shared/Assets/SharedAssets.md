@@ -20,7 +20,7 @@ See documentation about assets here : https://github.com/unoplatform/uno/blob/ma
 
 ## Table of scales
 
-| Scale | UWP         | iOS      | Android |
+| Scale | WinUI       | iOS      | Android |
 |-------|:-----------:|:--------:|:-------:|
 | `100` | scale-100   | @1x      | mdpi    |
 | `125` | scale-125   | N/A      | N/A     |
